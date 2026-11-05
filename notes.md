@@ -37,3 +37,79 @@ Web attacks are generally harder to detect than DDoS attacks because they often 
 
 In contrast, DDoS attacks generally generate unusually large amounts of traffic, making abnormal network activity easier to identify.
 
+# CIC-IDS2017 – Attack Notes
+
+## 1. FTP-Patator
+A brute force attack that repeatedly tries different username-password combinations to access an FTP server.
+Its main objective is to gain unauthorized access to files.
+
+## 2. SSH-Patator
+A brute force attack that attempts to guess SSH login credentials.
+Its objective is to gain unauthorized remote access to a computer or server.
+
+## 3. DoS Hulk
+An HTTP-based Denial of Service attack that sends excessive requests to a web server.
+Its objective is to overload server resources and make the website unavailable.
+
+## 4. DoS GoldenEye
+An HTTP-based DoS attack that repeatedly sends requests and keeps connections active.
+It attempts to exhaust web server resources and disrupt normal access.
+
+## 5. DoS Slowloris
+A slow HTTP attack that keeps multiple connections open using incomplete requests.
+It consumes server connection resources and prevents legitimate users from connecting.
+
+## 6. DoS Slowhttptest
+A slow HTTP denial-of-service attack that uses slow or incomplete HTTP communication.
+It attempts to exhaust server resources and reduce website availability.
+
+## 7. Heartbleed
+A vulnerability in certain OpenSSL versions that allows attackers to read unintended data from server memory.
+It may expose sensitive information such as passwords and private keys.
+
+## 8. Web Attack – Brute Force
+An attack that repeatedly tries different passwords to access a website or web application.
+Its objective is to gain unauthorized access to user or administrator accounts.
+
+## 9. Web Attack – XSS
+Cross-Site Scripting involves injecting malicious scripts into a vulnerable website.
+These scripts execute in another user's browser and may steal session information.
+
+## 10. Web Attack – SQL Injection
+An attack that inserts malicious SQL commands into vulnerable website inputs.
+It can allow attackers to access, modify or delete database information.
+
+## 11. Infiltration
+An attack in which an attacker gains unauthorized access to a computer or network.
+It may lead to data theft, system compromise and further malicious activities.
+
+## 12. Bot
+Malicious automated software or compromised devices perform unwanted network activities.
+Bots may steal information, send spam or participate in coordinated attacks.
+
+## 13. PortScan
+A technique used to discover open, closed or filtered ports on a computer or server.
+It helps identify available services and potential security weaknesses.
+
+## 14. DDoS
+A Distributed Denial of Service attack uses multiple compromised devices to send excessive traffic to a target.
+It overloads server resources and makes services unavailable to legitimate users.
+
+## 15. Benign
+BENIGN represents normal network traffic that does not contain any detected attack.
+
+
+## Day 2: Data understanding (EDA)
+- Dataset: CIC-IDS2017, 8 CSV files, 2,830,743 rows x 79 columns
+- Benign is about 80% of the data; the smallest class (Heartbleed) has 11 rows
+- Raw problems: 4,376 infinite values, 1,358 missing values, 330,995 duplicate rows
+- Web attack labels had garbled characters (encoding problem)
+- Why I capped big classes at 60,000. The data was extremely imbalanced (Benign was about 80% of the rows, Heartbleed had 11). I capped each large class at 60,000 rows to reduce the imbalance and speed up training, and kept all rows of the small classes.
+
+## Day 3: Cleaning
+- Removed 332,558 rows (about 12%): 2,830,743 -> 2,498,185
+- Fixed infinite and missing values, duplicates, and label names
+- Duplicates were uneven: SSH-Patator lost about 45%, PortScan about 43%, DoS Hulk about 25%
+- Why: (attack tools send many near-identical connections)
+- Why I removed duplicates before the split: (so identical rows can't be in both train and test)
+- Sample after cleaning: 274,187 rows

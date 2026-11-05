@@ -8,3 +8,5 @@ E. Documentation (problem, dataset attribution, architecture diagram,
    model comparison, results, screenshots, install steps, limitations)
 
 Rule: no accuracy claims without real experiments.
+
+
