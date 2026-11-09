@@ -113,3 +113,38 @@ BENIGN represents normal network traffic that does not contain any detected atta
 - Why: (attack tools send many near-identical connections)
 - Why I removed duplicates before the split: (so identical rows can't be in both train and test)
 - Sample after cleaning: 274,187 rows
+
+
+## Day 4: Label grouping, split, feature selection
+
+**Label grouping**
+- Merged 15 labels into 8 classes: Benign, DoS, DDoS, Port Scan, Brute Force, Web Attack, Bot, Other
+- Why: (some classes were too small to learn, e.g. Heartbleed 11 rows, SQL Injection 21 rows)
+- "Other" (Infiltration + Heartbleed) has only 47 rows in total, 9 in the test set, so its scores can't be trusted
+- Kept the original label in `Label_fine`, so I can check later which specific attack the model confuses
+
+**Feature engineering**
+- Created 5 features: total_packets, total_bytes, fwd_bwd_packet_ratio, fwd_bwd_bytes_ratio, bytes_per_packet
+- Only 2 survived feature selection (the two ratios). The other 3 were highly correlated with existing columns.
+- Why the `+ 1` in the ratios: (to avoid dividing by zero)
+
+**Train/test split**
+- 80/20 stratified split: 219,349 train rows, 54,838 test rows
+- Why stratified: (so each class, even tiny ones, appears in train and test in the same proportion)
+- random_state=42 so the split is repeatable
+
+**Feature selection (train set only)**
+- 83 features -> dropped 8 constant + 30 highly correlated (> 0.95) -> kept 45
+- Why only the training set: (so test information can't influence which features the model sees)
+
+**Scaling**
+- StandardScaler fitted on train only, saved to models/scaler.joblib
+- Needed for Logistic Regression and the anomaly detectors, not for tree models
+
+**Leakage rule I follow**
+- Anything that learns from data (feature selection, scaler, SMOTE later) is fitted on train only and then applied to test
+
+**Problems I hit and how I fixed them**
+- Created files in the wrong folder (nested src/notebooks folders) -> moved them to the right place and checked the path in the breadcrumb
+
+
