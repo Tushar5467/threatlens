@@ -147,6 +147,6 @@ BENIGN represents normal network traffic that does not contain any detected atta
 **Problems I hit and how I fixed them**
 - Created files in the wrong folder (nested src/notebooks folders) -> moved them to the right place and checked the path in the breadcrumb.
 
-jk
+
 
 
